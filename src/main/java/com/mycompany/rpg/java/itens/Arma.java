@@ -1,13 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rpg.java.itens;
 
-/**
- *
- * @author User
- */
-public class Arma {
-    
-}
+public class Arma extends Item {
+    //Variáveis
+    private int dano;
+
+    public Arma(String nome, int preco, int dano) {
+
+        super(nome, preco);
+        this.dano = dano;
+
+    }
+
+    public int getDano() {
+
+        return dano;
+
+    }
+
+}//Fim da Classe

@@ -1,13 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rpg.java.itens;
 
-/**
- *
- * @author User
- */
 public class Item {
-    
-}
+    //Variáveis
+    private String nome;
+    private int preco; // preço em rosários
+
+    public Item(String nome, int preco) {
+
+        this.nome = nome;
+        this.preco = preco;
+
+    }
+
+    public String getNome() {
+
+        return nome;
+
+    }
+
+    public int getPreco() {
+
+        return preco;
+
+    }
+
+}//Fim da Classe

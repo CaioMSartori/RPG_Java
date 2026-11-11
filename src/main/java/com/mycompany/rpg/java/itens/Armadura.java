@@ -1,13 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rpg.java.itens;
 
-/**
- *
- * @author User
- */
-public class Armadura {
-    
-}
+public class Armadura extends Item {
+    //Variáveis
+    private int defesa; // quanto de dano a armadura absorve por golpe
+
+    public Armadura(String nome, int preco, int defesa) {
+
+        super(nome, preco);
+        this.defesa = defesa;
+
+    }
+
+    public int getDefesa() {
+
+        return defesa;
+
+    }
+
+}//Fim da Classe

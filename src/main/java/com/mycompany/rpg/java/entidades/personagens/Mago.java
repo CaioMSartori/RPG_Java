@@ -1,13 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rpg.java.entidades.personagens;
 
-/**
- *
- * @author User
- */
-public class Mago {
-    
-}
+import com.mycompany.rpg.java.entidades.inimigos.Inimigo;
+
+public class Mago extends Personagem {
+
+    public Mago(String nome) {
+        super(nome, 150, 160);
+    }
+
+    // Sobrescreve o Bater para ter a mensagem própria do mago
+    @Override
+    public void Bater(Inimigo alvo) {
+        if (getVida() > 0 && alvo.getVida() > 0) {
+            System.out.println(getNome() + " lançou um feitiço em " + alvo.getNome() + "!");
+            alvo.TomarPorrada(getDanoTotal());
+        }
+    }
+}//Fim da Classe

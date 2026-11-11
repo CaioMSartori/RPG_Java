@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rpg.java.entidades.inimigos;
 
-/**
- *
- * @author User
- */
-public class Goblin {
-    
+public class Goblin extends Inimigo {
+
+    public Goblin(String nome) {
+        super(nome, 250, 50); // chama o construtor do Inimigo
+    }
 }
