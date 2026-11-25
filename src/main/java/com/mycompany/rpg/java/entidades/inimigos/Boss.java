@@ -1,144 +1,129 @@
+
 package com.mycompany.rpg.java.entidades.inimigos;
+
+import com.mycompany.rpg.java.entidades.personagens.Personagem;
 import java.util.Random;
-import java.util.Scanner;
 
-public class Boss {
+public class Boss extends Inimigo {
 
-    // --- Atributos do Boss ---
-    String nomeBoss;
-    int vidaMaxBoss, vidaAtualBoss, ataqueBoss, defesaBoss;
-    String tipoBoss;
-    String descricaoEspecial;
+    private final int defesa;
+    private final String tipoBoss;
+    private final String descricaoEspecial;
 
-    // --- Atributos do Jogador ---
-    String nomeJogador;
-    int vidaMaxJogador, vidaAtualJogador, ataqueJogador;
+    // Construtor
+    public Boss(
+            String nome,
+            int vida,
+            int dano,
+            int defesa,
+            String tipoBoss,
+            String descricaoEspecial) {
 
-    Random random = new Random();
-    Scanner scanner = new Scanner(System.in);
+        super(nome, vida, dano);
 
-    // Define o boss pelo índice (0 a 6)
-    void definirBoss(int indice) {
-        switch (indice) {
-            case 0 -> {
-                nomeBoss = "Dragão de Fogo";
-                vidaMaxBoss = 150; ataqueBoss = 25; defesaBoss = 5;
-                tipoBoss = "Fogo";
-                descricaoEspecial = "lança uma explosão de chamas!";
-            }
-            case 1 -> {
-                nomeBoss = "Golem de Gelo";
-                vidaMaxBoss = 200; ataqueBoss = 15; defesaBoss = 15;
-                tipoBoss = "Gelo";
-                descricaoEspecial = "congela o terreno!";
-            }
-            case 2 -> {
-                nomeBoss = "Titã Elétrico";
-                vidaMaxBoss = 120; ataqueBoss = 30; defesaBoss = 2;
-                tipoBoss = "Elétrico";
-                descricaoEspecial = "descarrega um raio poderoso!";
-            }
-            case 3 -> {
-                nomeBoss = "Cobra Venenosa";
-                vidaMaxBoss = 100; ataqueBoss = 20; defesaBoss = 8;
-                tipoBoss = "Veneno";
-                descricaoEspecial = "libera uma nuvem de gás tóxico!";
-            }
-            case 4 -> {
-                nomeBoss = "Golem de Terra";
-                vidaMaxBoss = 250; ataqueBoss = 10; defesaBoss = 20;
-                tipoBoss = "Terra";
-                descricaoEspecial = "causa um terremoto!";
-            }
-            case 5 -> {
-                nomeBoss = "Fênix do Vento";
-                vidaMaxBoss = 110; ataqueBoss = 28; defesaBoss = 3;
-                tipoBoss = "Ar";
-                descricaoEspecial = "cria uma tempestade de lâminas!";
-            }
-            case 6 -> {
-                nomeBoss = "Sombra Eterna";
-                vidaMaxBoss = 180; ataqueBoss = 22; defesaBoss = 10;
-                tipoBoss = "Escuro";
-                descricaoEspecial = "drena a alma do jogador!";
-            }
+        this.defesa = defesa;
+        this.tipoBoss = tipoBoss;
+        this.descricaoEspecial = descricaoEspecial;
+    }
+
+    // Getters
+    public String getTipoBoss() {
+        return tipoBoss;
+    }
+
+    public int getDefesa() {
+        return defesa;
+    }
+
+    // Aplica a defesa do Boss ao dano recebido
+    @Override
+    public void TomarPorrada(int dano) {
+
+        int danoReal = Math.max(1, dano - defesa);
+
+        super.TomarPorrada(danoReal);
+    }
+
+    // Ataque especial do Boss
+    @Override
+    public void Bater(Personagem alvo) {
+
+        if (getVida() > 0 && alvo.getVida() > 0) {
+
+            System.out.println(
+                    getNome() + " " + descricaoEspecial);
+
+            alvo.TomarPorrada(getDano());
         }
-        vidaAtualBoss = vidaMaxBoss;
     }
 
-    boolean bossVivo() { return vidaAtualBoss > 0; }
-    boolean jogadorVivo() { return vidaAtualJogador > 0; }
+    // Sorteia um dos sete chefes elementais
+    public static Boss sortearBoss() {
 
-    void jogadorAtaca() {
-        int dano = Math.max(0, ataqueJogador - defesaBoss);
-        vidaAtualBoss -= dano;
-        if (vidaAtualBoss < 0) vidaAtualBoss = 0;
-        System.out.println(nomeJogador + " ataca " + nomeBoss + " causando " + dano + " de dano.");
-    }
+        return switch (new Random().nextInt(7)) {
 
-    void jogadorCura() {
-        int cura = random.nextInt(10) + 10;
-        vidaAtualJogador = Math.min(vidaMaxJogador, vidaAtualJogador + cura);
-        System.out.println(nomeJogador + " se curou em " + cura + " HP.");
-    }
+            case 0 -> new Boss(
+                    "Dragão de Fogo",
+                    150,
+                    25,
+                    5,
+                    "Fogo",
+                    "lança uma explosão de chamas!"
+            );
 
-    void bossAtaca() {
-        System.out.println(nomeBoss + " " + descricaoEspecial);
-        int dano = ataqueBoss;
-        vidaAtualJogador -= dano;
-        if (vidaAtualJogador < 0) vidaAtualJogador = 0;
-        System.out.println("Você recebeu " + dano + " de dano. HP restante: " + vidaAtualJogador);
-    }
+            case 1 -> new Boss(
+                    "Golem de Gelo",
+                    200,
+                    15,
+                    15,
+                    "Gelo",
+                    "congela o terreno!"
+            );
 
-    void exibirStatus() {
-        System.out.println("\n--- " + nomeBoss + " [" + tipoBoss + "] HP: " + vidaAtualBoss + "/" + vidaMaxBoss + " ---");
-        System.out.println(nomeJogador + " HP: " + vidaAtualJogador + "/" + vidaMaxJogador);
-    }
+            case 2 -> new Boss(
+                    "Titã Elétrico",
+                    120,
+                    30,
+                    2,
+                    "Elétrico",
+                    "descarrega um raio poderoso!"
+            );
 
-    void batalha() {
-        int turno = 1;
-        while (jogadorVivo() && bossVivo()) {
-            System.out.println("\n=== Turno " + turno + " ===");
-            exibirStatus();
+            case 3 -> new Boss(
+                    "Cobra Venenosa",
+                    100,
+                    20,
+                    8,
+                    "Veneno",
+                    "libera uma nuvem de gás tóxico!"
+            );
 
-            System.out.println("\n1. Atacar  |  2. Curar");
-            System.out.print("Escolha: ");
-            int opcao = scanner.nextInt();
+            case 4 -> new Boss(
+                    "Golem de Terra",
+                    250,
+                    10,
+                    20,
+                    "Terra",
+                    "causa um terremoto!"
+            );
 
-            switch (opcao) {
-                case 1 -> jogadorAtaca();
-                case 2 -> jogadorCura();
-                default -> System.out.println("Opção inválida, turno perdido.");
-            }
+            case 5 -> new Boss(
+                    "Fênix do Vento",
+                    110,
+                    28,
+                    3,
+                    "Ar",
+                    "cria uma tempestade de lâminas!"
+            );
 
-            if (!bossVivo()) {
-                System.out.println("\n" + nomeBoss + " foi derrotado! Vitória!");
-                return;
-            }
-
-            bossAtaca();
-            turno++;
-        }
-        if (!jogadorVivo())
-            System.out.println("\n" + nomeJogador + " foi derrotado... Game Over.");
-    }
-
-    public static void main(String[] args) {
-        // CORRIGIDO: Agora instancia a classe "Bosses" corretamente
-        Boss jogo = new Boss();
-
-        System.out.print("Digite seu nome: ");
-        jogo.nomeJogador = jogo.scanner.nextLine();
-        jogo.vidaMaxJogador = 100;
-        jogo.vidaAtualJogador = 100;
-        jogo.ataqueJogador = 15;
-
-        int indice = jogo.random.nextInt(7);
-        jogo.definirBoss(indice);
-
-        System.out.println("\nUm boss de " + jogo.tipoBoss + " apareceu: " + jogo.nomeBoss + "!");
-        jogo.batalha();
-
-        jogo.scanner.close();
+            default -> new Boss(
+                    "Sombra Eterna",
+                    180,
+                    22,
+                    10,
+                    "Escuro",
+                    "drena a alma do jogador!"
+            );
+        };
     }
 }
