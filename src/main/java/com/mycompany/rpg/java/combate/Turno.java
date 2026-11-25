@@ -6,6 +6,7 @@ import com.mycompany.rpg.java.entidades.inimigos.Inimigo;
 import com.mycompany.rpg.java.itens.Item;
 import com.mycompany.rpg.java.itens.Pc;
 import com.mycompany.rpg.java.itens.Pd;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ public class Turno {
     private final Scanner scanner;
 
     public Turno(Scanner scanner) {
+
         this.scanner = scanner;
     }
 
@@ -30,17 +32,18 @@ public class Turno {
             int opcao = lerOpcao(3);
 
             if (opcao == -1) {
+
                 return false;
             }
 
             switch (opcao) {
 
-                // Ataque básico
                 case 1 -> {
 
                     Inimigo alvo = escolherAlvo(inimigos);
 
                     if (alvo == null) {
+
                         return false;
                     }
 
@@ -49,10 +52,10 @@ public class Turno {
                     return true;
                 }
 
-                // Poção de cura
                 case 2 -> {
 
-                    Item pocao = buscarPocao(jogador, Pc.class);
+                    Item pocao = buscarPocao(
+                            jogador, Pc.class);
 
                     if (pocao == null) {
 
@@ -71,10 +74,10 @@ public class Turno {
                     }
                 }
 
-                // Poção de dano
                 case 3 -> {
 
-                    Item pocao = buscarPocao(jogador, Pd.class);
+                    Item pocao = buscarPocao(
+                            jogador, Pd.class);
 
                     if (pocao == null) {
 
@@ -86,10 +89,12 @@ public class Turno {
                         Inimigo alvo = escolherAlvo(inimigos);
 
                         if (alvo == null) {
+
                             return false;
                         }
 
                         if (jogador.usar(pocao, alvo)) {
+
                             return true;
                         }
                     }
@@ -105,13 +110,14 @@ public class Turno {
         inimigo.Bater(jogador);
     }
 
-    // Busca uma poção de determinado tipo no inventário
+    // Busca uma poção no inventário
     private Item buscarPocao(
             Personagem jogador, Class<? extends Item> tipo) {
 
         for (Item item : jogador.getInventario().getItens()) {
 
             if (tipo.isInstance(item)) {
+
                 return item;
             }
         }
@@ -119,7 +125,7 @@ public class Turno {
         return null;
     }
 
-    // Permite selecionar um inimigo vivo como alvo
+    // Seleciona um inimigo vivo
     private Inimigo escolherAlvo(List<Inimigo> inimigos) {
 
         List<Inimigo> vivos = inimigos.stream()
@@ -127,11 +133,12 @@ public class Turno {
                 .toList();
 
         if (vivos.isEmpty()) {
+
             return null;
         }
 
-        // Se houver apenas um inimigo, seleciona automaticamente
         if (vivos.size() == 1) {
+
             return vivos.get(0);
         }
 
@@ -150,28 +157,32 @@ public class Turno {
         return opcao == -1 ? null : vivos.get(opcao - 1);
     }
 
-    // Realiza a leitura e validação da entrada
+    // Validação da entrada
     private int lerOpcao(int maximo) {
 
         while (true) {
 
             System.out.print("Escolha: ");
 
-            if (!scanner.hasNext()) {
+            if (!scanner.hasNextLine()) {
+
                 return -1;
             }
 
-            if (scanner.hasNextInt()) {
+            String entrada = scanner.nextLine().trim();
 
-                int opcao = scanner.nextInt();
+            try {
+
+                int opcao = Integer.parseInt(entrada);
 
                 if (opcao >= 1 && opcao <= maximo) {
+
                     return opcao;
                 }
 
-            } else {
+            } catch (NumberFormatException e) {
 
-                scanner.next();
+                // Entrada não numérica.
             }
 
             System.out.println(
